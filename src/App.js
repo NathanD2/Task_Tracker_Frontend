@@ -1,4 +1,3 @@
-// import React from 'react' -- for class approach
 import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Header from './components/Header'
@@ -23,9 +22,11 @@ function App() {
 }
 
   useEffect(() => {
+    // Gets tasks from backend.
     const getTasks = async () => {
       const tasksFromServer = await fetchTasks()
-      console.log(tasksFromServer);
+
+      // Sets tasks in order by id.
       setTasks(tasksFromServer.sort((a,b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0)))
     }
 
@@ -69,10 +70,6 @@ function App() {
     console.log("res data:", data);
 
     setTasks([...tasks, data])
-
-    // const id = Math.floor(Math.random() * 10000) + 1
-    // const newTask = { id, ...task }
-    // setTasks([...tasks, newTask]) // Copy task already there and add new task on top.
   }
 
   // Delete Task
@@ -96,7 +93,7 @@ function App() {
   const newReminderState = !taskToToggle.reminder;
   const updTask = { ...taskToToggle, reminder: !taskToToggle.reminder }
 
-  const res = await fetch(endpoints.root + endpoints.setReminder, {
+  await fetch(endpoints.root + endpoints.setReminder, {
     method: 'PUT',
     headers: {
       'Content-type': 'application/json',
@@ -106,13 +103,13 @@ function App() {
       reminder: newReminderState
     }),
   })
-  const data = await res.json()
+
+  // Sets tasks in order by id.
   setTasks(
     tasks.map((task) =>
       task.id === taskId ? updTask : task
     ).sort((a,b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0))
   )
-  console.log("Tasks:", tasks);
 }
 
   return (
