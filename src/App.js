@@ -73,7 +73,7 @@ function App() {
             const tasksFromServer = JSON.parse(this.responseText).tasks;
 
             // Sets tasks in order by id.
-            if (tasksFromServer) {
+            if (tasksFromServer != undefined) {
                 setTasks(tasksFromServer.sort((a,b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0)))
             }
           
