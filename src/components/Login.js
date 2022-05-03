@@ -39,14 +39,12 @@ const Login = ( { getTasks, setLoggedIn }) => {
         }
 
         // Login
-        console.log("Endpoint:", endpoints.root + "auth")
         xhttp.open("POST", endpoints.root + "auth", true);
         xhttp.setRequestHeader("Content-type", "application/json");
         let obj = {
             username: username,
             password: password
         };
-        console.log("OBJ:", obj);
         xhttp.send(JSON.stringify(obj));
 
         xhttp.onreadystatechange = function () {
@@ -62,11 +60,17 @@ const Login = ( { getTasks, setLoggedIn }) => {
                 setLoggedIn(true);
                 getTasks();
                 routeHome();
-            } else if (this.status != 200) {
-                console.log("Request was a failure!")
+            }
+            else if (this.status == 401) {
+                console.log("Auth unsuccessful")
                 setStatusText("Username or Password Invalid. Please try again");
-            } else {
-                console.log("Request in progress.")
+            }
+            else if (this.status != 200 || this.status != 201) {
+              console.log("Request was a failure!")
+              setStatusText("Something went wrong. Please try again another time.");
+            }
+            else {
+              console.log("Request in progress.")
             }
         }
         

@@ -1,7 +1,20 @@
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 
+
 const CreateAccount = ({ getTasks, setLoggedIn }) => {
+
+    // Password validator.
+    var passwordValidator = require('password-validator');
+    var schema = new passwordValidator;
+    schema
+    .is().min(5)                                    // Minimum length 5
+    .is().max(100)                                  // Maximum length 100
+    .has().uppercase()                              // Must have uppercase letters
+    .has().lowercase()                              // Must have lowercase letters
+    .has().digits(1)                                // Must have at least 1 digits
+    .has().not().spaces();                          // Should not have spaces
+  
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [statusText, setStatusText] = useState('')
@@ -32,8 +45,23 @@ const CreateAccount = ({ getTasks, setLoggedIn }) => {
     }
 
     // Checks whether string contains whitespace.
-    function containsWhitespace(str) {
+    const containsWhitespace = (str) => {
         return /\s/.test(str);
+    }
+
+    // Validates password based on schema.
+    const validatePassword = (password) => {
+        return schema.validate(password);
+    };
+
+    // Gets failed validation password details
+    const getFailedPasswordValidationDetails = (password) => {
+        const details = schema.validate(password, { details: true })
+        let detailsString = "";
+        details.forEach((detail) => {
+            detailsString += detail.message + "\n";
+        })
+        return detailsString;
     }
     
     const onSubmit = (e) => {
@@ -47,9 +75,12 @@ const CreateAccount = ({ getTasks, setLoggedIn }) => {
             alert('Username cannot have whitespaces')
             return
         }
+        if (!validatePassword(password)) {
+            alert('Your password need to have the following form:\n\n' + getFailedPasswordValidationDetails(password));
+            return
+        }
 
         // Login
-        console.log("Endpoint:", endpoints.root + endpoints.addUser)
         xhttp.open("POST", endpoints.root + endpoints.addUser, true);
         xhttp.setRequestHeader("Content-type", "application/json");
         let obj = {
