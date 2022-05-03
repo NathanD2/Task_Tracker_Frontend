@@ -70,12 +70,10 @@ function App() {
           // If request finished and status OK
           if (this.readyState === 4 && (this.status === 200 || this.status === 201)) {
             console.log("Request was a success!")
-            const tasksFromServer = JSON.parse(this.responseText).tasks;
+            const tasksFromServer = JSON.parse(this.responseText)['tasks'];
 
             // Sets tasks in order by id.
-            if (tasksFromServer != undefined) {
-                setTasks(tasksFromServer.sort((a,b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0)))
-            }
+            setTasks(tasksFromServer.sort((a,b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0)))
           
           } else if (this.status === 401) {
               console.log("Authentication Error")
