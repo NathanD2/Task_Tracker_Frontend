@@ -73,7 +73,9 @@ function App() {
             const tasksFromServer = JSON.parse(this.responseText).tasks;
 
             // Sets tasks in order by id.
-            setTasks(tasksFromServer.sort((a,b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0)))
+            if (tasksFromServer) {
+                setTasks(tasksFromServer.sort((a,b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0)))
+            }
           
           } else if (this.status === 401) {
               console.log("Authentication Error")
