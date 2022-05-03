@@ -70,7 +70,7 @@ function App() {
           // If request finished and status OK
           if (this.readyState === 4 && (this.status === 200 || this.status === 201)) {
             console.log("Request was a success!")
-            const tasksFromServer = JSON.parse(this.responseText);
+            const tasksFromServer = JSON.parse(this.responseText).tasks;
 
             // Sets tasks in order by id.
             setTasks(tasksFromServer.sort((a,b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0)))
