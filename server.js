@@ -23,9 +23,15 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.get('/ping', function (req, res) {
  return res.send('pong');
 });
+// app.get('/session', (req, res) => {
+//   res.status(200).send('req.session:' + JSON.stringify(req.session));
+// })
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
+
+
+
 app.listen(port, () => {
   console.log(`Listening (locally) on http://localhost:${process.env.PORT || 8080}/`);
 });
