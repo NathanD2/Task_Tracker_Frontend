@@ -21,7 +21,7 @@ const CreateAccount = ({ getTasks, setLoggedIn }) => {
 
     const isProduction = process.env.NODE_ENV === 'production';
     const endpoints = {
-        root: isProduction ? "https://nathan-tasks-backend.herokuapp.com/" : "http://localhost:5000/v2/",
+        root: isProduction ? "https://nathan-tasks-backend.herokuapp.com/v2/" : "http://localhost:5000/v2/",
         tasks: "tasks",
         task: "task",
         addTask: "addtask",
